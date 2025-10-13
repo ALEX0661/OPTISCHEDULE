@@ -1,0 +1,104 @@
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes modalScaleIn {
+    from { opacity: 0; transform: scale(0.85); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  
+  @keyframes modalSlideInTop {
+    from { opacity: 0; transform: translateY(-50px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes modalPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  
+  @keyframes modalBounce {
+    0% { transform: scale(0.8); opacity: 0; }
+    70% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  
+ 
+  .success-modal {
+    animation: modalFadeIn .1s ease;
+  }
+  
+  .success-modal-content {
+    animation: modalBounce 0.5s ease-out;
+  }
+  
+  .success-logo {
+    animation: modalPulse 1s ease-in-out 0.3s;
+  }
+  
+  .close-modal-button:hover svg {
+    animation: modalPulse 0.5s ease infinite;
+  }
+  
+  
+  .modal-overlay {
+    animation: modalFadeIn 0.1s ease;
+  }
+  
+  .unassign-modal {
+    animation: modalScaleIn 0.4s ease-out;
+  }
+  
+  .unassign-modal-header {
+    animation: modalSlideInTop 0.5s ease;
+  }
+  
+  .modal-btn:hover {
+    transform: translateY(-3px);
+    transition: transform 0.3s ease;
+  }
+  
+  .confirmation-modal-overlay {
+    animation: modalFadeIn 0.1s ease;
+  }
+  
+  .confirmation-modal {
+    animation: modalBounce 0.5s ease;
+  }
+  
+  .confirmation-modal-title {
+    animation: modalSlideInTop 0.4s ease;
+  }
+  
+  .confirmation-modal-message {
+    animation: modalFadeIn 0.5s ease 0.1s backwards;
+  }
+  
+  .confirmation-modal-buttons {
+    animation: modalFadeIn 0.5s ease 0.2s backwards;
+  }
+  
+  .confirmation-modal-btn {
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .confirmation-modal-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .confirmation-modal-btn:active {
+    transform: translateY(-1px);
+  }
+  
+  .modal-closing {
+    animation: modalFadeOut 0.3s ease forwards;
+  }
+  
+  @keyframes modalFadeOut {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.9); }
+  }

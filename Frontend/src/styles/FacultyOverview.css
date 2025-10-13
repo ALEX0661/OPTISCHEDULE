@@ -1,0 +1,638 @@
+/* FacultyOverview.css */
+:root {
+  --primary: #2E7D32;
+  --primary-dark: #1B5E20;
+  --primary-light: rgba(46, 125, 50, 0.1);
+  --white: #ffffff;
+  --light-gray: #f5f5f5;
+  --medium-gray: #e0e0e0;
+  --dark-gray: #333333;
+  --border-gray: #dddddd;
+  --shadow-light: rgba(0, 0, 0, 0.08);
+  --shadow-medium: rgba(0, 0, 0, 0.15);
+  --danger: #d32f2f;
+  --danger-dark: #b71c1c;
+  --danger-light: rgba(211, 47, 47, 0.1);
+  --card-border-radius: 8px;
+  --transition-speed: 0.3s;
+  --font-family: 'Poppins', sans-serif;
+  --animation-fast: 0.2s;
+  --animation-medium: 0.5s;
+  --animation-slow: 0.8s;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--light-gray);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInFromTop {
+  from { 
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromBottom {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from { 
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from { 
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.overview-header {
+  background-color: var(--white);
+  padding: 20px 40px;
+  box-shadow: 0 2px 4px var(--shadow-light);
+  text-align: center;
+  animation: slideInFromTop var(--animation-medium) ease-out;
+}
+
+.overview-header h1 {
+  margin: 0;
+  font-size: 2em;
+  color: var(--primary);
+  animation: fadeIn var(--animation-medium) ease-out;
+}
+
+.faculty-overview-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--white), var(--light-gray));
+  position: relative;
+  padding-bottom: 60px; 
+  margin-right: -20px;
+}
+
+.faculty-grid {
+  display: grid;
+  gap: 20px;
+  padding: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  background-color: var(--white);
+  animation: fadeIn var(--animation-medium) ease-out;
+}
+
+.improved-grid-card {
+  background-color: var(--white);
+  border: 1px solid var(--border-gray);
+  border-radius: var(--card-border-radius);
+  box-shadow: 0 2px 6px var(--shadow-light);
+  transition: transform var(--transition-speed), box-shadow var(--transition-speed), background var(--transition-speed);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideInFromBottom var(--animation-medium) ease-out;
+  animation-fill-mode: both;
+}
+
+.improved-grid-card:nth-child(odd) {
+  animation-delay: calc(var(--animation-fast) * 0.5);
+}
+
+.improved-grid-card:nth-child(even) {
+  animation-delay: calc(var(--animation-fast) * 0.8);
+}
+
+.improved-grid-card:hover {
+  background-color: var(--primary-light);
+  box-shadow: 0 4px 12px var(--shadow-medium);
+  transform: scale(1.03);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background-color: var(--primary);
+  color: var(--white);
+  transition: background-color var(--transition-speed);
+}
+
+.improved-grid-card:hover .card-header {
+  background-color: var(--primary-dark);
+}
+
+.card-title-container {
+  flex-grow: 1;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1.2em;
+  font-weight: 600;
+  transition: transform var(--transition-speed);
+}
+
+.improved-grid-card:hover .card-title {
+  transform: translateX(5px);
+}
+
+.card-subtitle {
+  margin: 0;
+  font-size: 0.9em;
+  opacity: 0.9;
+  transition: opacity var(--transition-speed);
+}
+
+.improved-grid-card:hover .card-subtitle {
+  opacity: 1;
+}
+
+.card-footer {
+  padding: 10px 15px;
+  background-color: var(--light-gray);
+  text-align: center;
+  font-size: 0.85em;
+  color: var(--dark-gray);
+  border-top: 1px solid var(--border-gray);
+  transition: background-color var(--transition-speed);
+}
+
+.improved-grid-card:hover .card-footer {
+  background-color: var(--medium-gray);
+}
+
+.faculty-panel {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 40px;
+  background-color: var(--white);
+  flex-grow: 1;
+  animation: fadeIn var(--animation-medium) ease-out;
+}
+
+.faculty-panel-header {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.back-btn {
+  position: absolute;
+  top: -60px; 
+  left: 10px;
+  background: var(--primary);
+  color: var(--white);
+  border: none;
+  padding: 4px 8px;  
+  border-radius: 20px;  
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px var(--shadow-light);
+  font-size: 0.9em;  
+  gap: 4px;  
+  animation: slideInFromLeft var(--animation-medium) ease-out;
+}
+
+.back-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--shadow-medium);
+}
+
+.back-logo {
+  display: flex;
+  align-items: center;
+  transition: transform var(--transition-speed);
+}
+
+.back-btn:hover .back-logo {
+  transform: translateX(-3px);
+}
+
+.back-text {
+  font-weight: bold;
+}
+
+.faculty-panel h2 {
+  margin: 0;
+  font-size: 1.8em;
+  color: var(--primary);
+  animation: slideInFromTop var(--animation-medium) ease-out;
+}
+
+.faculty-details-card {
+  background-color: var(--white);
+  border: 1px solid var(--border-gray);
+  border-radius: var(--card-border-radius);
+  box-shadow: 0 3px 10px var(--shadow-light);
+  padding: 20px;
+  margin-bottom: 20px;
+  animation: slideInFromBottom var(--animation-medium) ease-out;
+  transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.faculty-details-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px var(--shadow-medium);
+}
+
+.faculty-details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.faculty-details-name {
+  margin: 0;
+  font-size: 1.8em;
+  color: var(--primary);
+  animation: slideInFromLeft var(--animation-medium) ease-out;
+}
+
+.faculty-actions {
+  display: flex;
+  gap: 12px;
+  animation: slideInFromRight var(--animation-medium) ease-out;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--white);
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 5px var(--shadow-light);
+  position: relative;
+  overflow: hidden;
+}
+
+.action-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-100%);
+  transition: transform 0.25s ease;
+}
+
+.action-btn:hover::before {
+  transform: translateY(0);
+}
+
+.action-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px var(--shadow-medium);
+}
+
+.action-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px var(--shadow-light);
+}
+
+.edit-faculty-btn {
+  background: var(--primary);
+}
+
+.edit-faculty-btn i {
+  font-size: 1em;
+  line-height: 1;
+  vertical-align: middle;
+  display: inline-block; /* Ensure icon is visible */
+}
+
+.icon-fallback {
+  display: none; /* Hide fallback text if Font Awesome loads */
+  font-size: 0.8em;
+  margin-left: 5px;
+}
+
+.edit-faculty-btn .fas.fa-edit:not(:empty) + .icon-fallback {
+  display: none; /* Ensure fallback is hidden when icon is present */
+}
+
+.edit-faculty-btn .icon-fallback:not(:empty) {
+  display: inline-block; /* Show fallback if icon fails */
+}
+
+.delete-btn {
+  background: var(--danger);
+}
+
+.delete-btn:hover {
+  background: var(--danger-dark);
+}
+
+.edit-btn-icon, .delete-btn-icon {
+  font-size: 1.2em;
+  transition: transform var(--transition-speed);
+}
+
+.action-btn:hover .edit-btn-icon,
+.action-btn:hover .delete-btn-icon {
+  transform: rotate(10deg);
+}
+
+.faculty-info p {
+  margin: 8px 0;
+  font-size: 0.95em;
+  color: var(--dark-gray);
+  animation: fadeIn var(--animation-medium) ease-out;
+  animation-fill-mode: both;
+  animation-delay: var(--animation-fast);
+}
+
+.faculty-info p:nth-child(2) {
+  animation-delay: calc(var(--animation-fast) * 1.2);
+}
+
+.faculty-info p:nth-child(3) {
+  animation-delay: calc(var(--animation-fast) * 1.4);
+}
+
+.faculty-units {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border-gray);
+  animation: fadeIn var(--animation-medium) ease-out;
+  animation-delay: var(--animation-medium);
+}
+
+.schedule-name-header {
+  text-align: center;
+  margin-bottom: 30px;
+  animation: slideInFromTop var(--animation-medium) ease-out;
+}
+
+.schedule-name-header h1 {
+  font-size: 2em;
+  color: var(--primary);
+  letter-spacing: 0.5px;
+}
+
+.filters-card {
+  background-color: var(--white);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 3px 10px var(--shadow-light);
+  transition: box-shadow var(--transition-speed);
+}
+
+.filters-card:hover {
+  box-shadow: 0 5px 15px var(--shadow-medium);
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn var(--animation-medium) ease-out;
+  animation-fill-mode: both;
+}
+
+.filter-item:nth-child(1) {
+  animation-delay: calc(var(--animation-fast) * 0.5);
+}
+
+.filter-item:nth-child(2) {
+  animation-delay: calc(var(--animation-fast) * 0.7);
+}
+
+.filter-item:nth-child(3) {
+  animation-delay: calc(var(--animation-fast) * 0.9);
+}
+
+.filter-item:nth-child(4) {
+  animation-delay: calc(var(--animation-fast) * 1.1);
+}
+
+.filter-label {
+  font-size: 0.85em;
+  color: var(--dark-gray);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.filter-select {
+  padding: 10px;
+  border: 1px solid var(--border-gray);
+  border-radius: 5px;
+  font-size: 0.95em;
+  outline: none;
+  transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.filter-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
+}
+
+.faculty-events-grid {
+  margin-bottom: 25px;
+  animation: slideInFromBottom var(--animation-medium) ease-out;
+  animation-delay: var(--animation-fast);
+}
+
+.events-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--white);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 12px var(--shadow-light);
+  transition: box-shadow var(--transition-speed);
+}
+
+.events-table:hover {
+  box-shadow: 0 5px 20px var(--shadow-medium);
+}
+
+.events-table th,
+.events-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-gray);
+  text-align: left;
+  font-size: 0.95em;
+  transition: background-color var(--transition-speed);
+}
+
+.events-table th {
+  background-color: var(--light-gray);
+  font-weight: 600;
+}
+
+.events-table tbody tr {
+  transition: background-color var(--transition-speed), transform var(--transition-speed);
+}
+
+.events-table tbody tr:hover {
+  background-color: var(--primary-light);
+  transform: translateX(5px);
+}
+
+.export-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 25px;
+  animation: slideInFromBottom var(--animation-medium) ease-out;
+}
+
+.export-buttons button {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--primary);
+  color: var(--white);
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.export-buttons button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%, -50%);
+  transform-origin: 50% 50%;
+}
+
+.export-buttons button:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--shadow-medium);
+}
+
+.floating-add-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: var(--white);
+  font-size: 32px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  animation: fadeIn var(--animation-medium) ease-out;
+  animation-delay: var(--animation-slow);
+  animation-fill-mode: both;
+}
+
+.floating-add-btn:hover {
+  background-color: var(--primary-dark);
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 2000;
+  animation: fadeIn var(--animation-fast) ease-out;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-top: 5px solid var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-text {
+  margin-top: 15px;
+  font-size: 1.1em;
+  color: var(--primary);
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.error-msg {
+  color: red;
+  font-size: 0.9em;
+  margin-top: 10px;
+  animation: slideInFromBottom var(--animation-medium) ease-out;
+}
+
+.modal-enter {
+  animation: fadeIn var(--animation-medium) ease-out;
+}
+
+.modal-exit {
+  animation: fadeIn var(--animation-medium) ease-out reverse;
+}

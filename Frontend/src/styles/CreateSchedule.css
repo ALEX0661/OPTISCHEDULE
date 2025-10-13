@@ -1,0 +1,663 @@
+/* ------------------------------------------------------------------------ 
+   CreateSchedule.css
+------------------------------------------------------------------------
+   Global Font: "Poppins" imported from Google Fonts
+   Theme: Dark Green Palette
+   Design Enhancements:
+     • Softer rounded corners (12px+)
+     • Improved spacing and padding to reduce crampiness
+     • Consistent margin and box-shadow for separation of sections
+     • Added animations for enhanced user experience
+------------------------------------------------------------------------ */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary: #2E7D32;            
+  --primary-dark: #1B5E20;       
+  --primary-light: rgba(46, 125, 50, 0.1);  
+  --white: #ffffff;
+  --light-gray: #f5f5f5;
+  --medium-gray: #e0e0e0;
+  --dark-gray: #666666;
+  --border-gray: #dddddd;
+  
+ 
+  --animation-fast: 0.2s;
+  --animation-medium: 0.4s;
+  --animation-slow: 0.8s;
+}
+
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInFromTop {
+  from { 
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromBottom {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from { 
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from { 
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes ripple {
+  0% {
+    box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 0 15px rgba(46, 125, 50, 0);
+  }
+}
+
+.create-schedule-page {
+  width: 100%;
+  padding: 24px 32px;        
+  background-color: #f0f4f2;   
+  box-sizing: border-box;
+  animation: fadeIn var(--animation-medium) ease-out;
+  position: relative; 
+  min-height: 100vh; 
+}
+
+
+.schedule-name-card,
+.filters-card,
+.course-management-card {
+  background-color: var(--white);
+  padding: 16px 24px;         
+  border-radius: 10px;        
+  margin-bottom: 20px;      
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07); 
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.schedule-name-card:hover,
+.filters-card:hover,
+.course-management-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+
+.schedule-name-card {
+  animation: slideInFromTop var(--animation-medium) ease-out;
+}
+
+.filters-card {
+  animation: slideInFromLeft var(--animation-medium) ease-out;
+  animation-delay: 0.1s;
+}
+
+.course-management-card {
+  animation: slideInFromRight var(--animation-medium) ease-out;
+  animation-delay: 0.2s;
+}
+
+
+.page-title,
+.filters-card h2,
+.course-management-card h2 {
+  font-size: 1.28rem;         
+  color: var(--primary);
+  margin-bottom: 12px;       
+  animation: fadeIn var(--animation-medium) ease-out;
+}
+
+.section-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;         
+  animation: fadeIn var(--animation-medium) ease-out;
+  animation-delay: 0.1s;
+}
+
+
+.schedule-name-card input,
+.filters-card input,
+.filters-card select,
+.course-management-card input,
+.course-management-card select {
+  width: 100%;
+  padding: 8px 10px;          
+  border: 1px solid var(--border-gray);
+  border-radius: 6px;        
+  font-size: 0.8em;           
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.schedule-name-card input:focus,
+.filters-card input:focus,
+.filters-card select:focus,
+.course-management-card input:focus,
+.course-management-card select:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
+}
+
+
+select {
+  width: 110px;                
+  appearance: none;
+  background-color: var(--white);
+  border: 1px solid var(--border-gray);
+  border-radius: 6px;         
+  padding: 8px 11px;         
+  font-size: 0.8em;           
+  color: var(--dark-gray);
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2210%22%20height%3D%226%22%20viewBox%3D%220%200%2010%206%22%20xmlns%3D%22http://www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M0%200l5%206l5-6H0z%22%20fill%3D%22%23666%22/%3E%3C/svg%3E');
+  background-repeat: no-repeat;
+  background-position: right 11px center;  
+  background-size: 8px 5px;    
+  transition: border-color 0.3s ease;
+}
+
+select:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;               
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn var(--animation-medium) ease-out;
+}
+
+
+.filter-item:nth-child(1) {
+  animation-delay: 0.2s;
+}
+
+.filter-item:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.filter-item:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.filter-item label {
+  font-weight: 600;
+  margin-bottom: 6px;      
+  color: var(--dark-gray);
+}
+
+
+.import-action {
+  margin-bottom: 12px;      
+  animation: fadeIn var(--animation-medium) ease-out;
+  animation-delay: 0.3s;
+}
+
+.import-excel-btn {
+  background-color: var(--primary);
+  color: var(--white);
+  border: none;
+  padding: 8px 14px;        
+  font-size: 0.76em;        
+  border-radius: 6px;        
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.import-excel-btn:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.import-excel-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+
+.course-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;         
+  background-color: var(--white);
+  border-radius: 10px;      
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07); 
+  animation: slideInFromBottom var(--animation-medium) ease-out;
+  animation-delay: 0.4s;
+}
+
+.course-table th,
+.course-table td {
+  padding: 11px 13px;        
+  text-align: left;
+  font-size: 0.76em;         
+  border-bottom: 1px solid var(--border-gray);
+  transition: background-color 0.3s ease;
+}
+
+.course-table th {
+  background-color: var(--light-gray);
+  font-weight: 600;
+}
+
+.course-table tbody tr {
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.course-table tbody tr:hover {
+  background-color: var(--primary-light);
+  transform: translateX(5px);
+}
+
+.action-col {
+  width: 32px;              
+}
+
+
+.edit-btn {
+  background: none;
+  border: none;
+  font-size: 0.96em;         
+  cursor: pointer;
+  color: var(--primary);
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.edit-btn:hover {
+  transform: scale(1.2);
+  color: var(--primary-dark);
+}
+
+
+.generate-schedule-section {
+  text-align: center;
+  margin-bottom: 28px;      
+  animation: fadeIn var(--animation-medium) ease-out;
+  animation-delay: 0.5s;
+}
+
+.generate-btn {
+  background-color: var(--primary);
+  color: var(--white);
+  border: none;
+  padding: 11px 21px;      
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  font-size: 0.8em;
+}
+
+.generate-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.generate-btn:hover:enabled {
+  background-color: var(--primary-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.generate-btn:active:enabled {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.error-msg {
+  color: var(--red);
+  font-size: 0.76em;
+  margin-top: 8px;
+  font-weight: 500;
+  animation: slideInFromBottom var(--animation-medium) ease-out;
+}
+
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  animation: fadeIn var(--animation-fast) ease-out;
+}
+
+.spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid var(--primary-dark);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+.loading-message {
+  animation: fadeInOut 3s ease-in-out infinite;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn var(--animation-medium) ease-out;
+}
+
+
+.modal-window {
+  background-color: #fff;
+  padding: 24px 32px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 550px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  animation: slideInFromBottom var(--animation-medium) ease-out;
+  
+ 
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent; 
+}
+
+.modal-window:hover,
+.modal-window:focus,
+.modal-window:active {
+  scrollbar-color: var(--primary) transparent; 
+}
+
+.modal-window::-webkit-scrollbar {
+  width: 6px; 
+}
+
+.modal-window::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-window::-webkit-scrollbar-thumb {
+  background-color: transparent; 
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.modal-window:hover::-webkit-scrollbar-thumb,
+.modal-window:focus::-webkit-scrollbar-thumb,
+.modal-window:active::-webkit-scrollbar-thumb {
+  background-color: var(--primary); 
+}
+
+
+.modal-window {
+  -ms-overflow-style: none; 
+  scrollbar-width: thin; 
+}
+
+
+
+.modal-header {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #2e7d32;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 8px;
+}
+
+
+.modal-window form label {
+  display: block;
+  margin-top: 12px;
+  font-weight: 600;
+  color: #333;
+  animation: fadeIn var(--animation-medium) ease-out;
+  animation-delay: var(--animation-fast);
+}
+
+.modal-window form input,
+.modal-window form select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 6px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  font-size: 1rem;
+}
+
+.modal-window form input:focus,
+.modal-window form select:focus {
+  border-color: #2e7d32;
+  box-shadow: 0 0 8px rgba(46, 125, 50, 0.2);
+  outline: none;
+}
+
+
+.modal-button-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+  animation: slideInFromBottom var(--animation-medium) ease-out;
+  animation-delay: 0.2s;
+}
+
+
+.save-btn {
+  background-color: #2e7d32;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.save-btn:hover {
+  background-color: #276c2b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.save-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.cancel-btn {
+  background-color: #eee;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.cancel-btn:hover {
+  background-color: #ddd;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cancel-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+
+.preview-save {
+  text-align: right;
+  margin-top: 12px;
+  animation: fadeIn var(--animation-medium) ease-out;
+  animation-delay: 0.3s;
+}
+
+.table-area {
+  margin-top: 20px;
+  animation: fadeIn var(--animation-medium) ease-out;
+  animation-delay: 0.2s;
+}
+
+.table-actions {
+  margin-bottom: 12px;
+  text-align: right;
+  animation: fadeIn var(--animation-medium) ease-out;
+  animation-delay: 0.1s;
+}
+
+.centered-msg {
+  text-align: center;
+  padding: 16px;
+  animation: fadeIn var(--animation-medium) ease-out;
+}
+
+
+.floating-add-btn {
+  position: fixed; 
+  bottom: 30px;
+  right: 40px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: var(--white);
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  z-index: 500; 
+  animation: fadeIn var(--animation-medium) ease-out;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────── */
+
+.no-course-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn var(--animation-medium) ease-out;
+}
+
+.no-course-logo {
+  max-width: 150px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.no-course-container p {
+  font-size: 1.1em;
+  color: #555;
+  text-align: center;
+  animation: fadeIn var(--animation-medium) ease-out;
+  animation-delay: 0.2s;
+}
+
+
+.modal-enter {
+  animation: fadeIn var(--animation-medium) ease-out;
+}
+
+.modal-exit {
+  animation: fadeIn var(--animation-medium) ease-out reverse;
+}
+
+.course-counter {
+  font-size: 0.85rem;
+  color: #6c757d;
+  font-weight: normal;
+}
