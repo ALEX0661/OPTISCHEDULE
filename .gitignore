@@ -1,4 +1,25 @@
+# Node
 node_modules/
 .cache/
 npm-debug.log
 yarn-error.log
+package-lock.json
+
+# Build outputs
+dist/
+build/
+.next/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
