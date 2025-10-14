@@ -48,7 +48,7 @@ export const formatFilterInfo = (filterInfo) => {
   if (typeof filterInfo === 'string') {
     // Try to parse the existing string format
     // Example: "BSCS Year2 Block B"
-    const programMatch = filterInfo.match(/(BSIT|BSCS|BSEMC)/);
+    const programMatch = filterInfo.match(/(BSIT|BSCS||BSEMC-DAT|BSEMC-GD)/);
     const yearMatch = filterInfo.match(/Year(\d+)/);
     const blockMatch = filterInfo.match(/Block\s+([A-F])/);
     const courseMatch = filterInfo.match(/Course:\s+(.+?)(?:\s+|$)/);
@@ -60,7 +60,8 @@ export const formatFilterInfo = (filterInfo) => {
       const programMap = {
         'BSIT': 'BS in Information Technology',
         'BSCS': 'BS in Computer Science',
-        'BSEMC': 'BS in Entertainment and Multimedia Computing'
+        'BSEMC-DAT': 'BS Entertainment and Multimedia Computing - Major in Digital Animation Technology',
+        'BSEMC-GD': 'BS Entertainment and Multimedia Computing - Major in Game Development'
       };
       parts.push(programMap[programMatch[1]] || programMatch[1]);
     }
@@ -100,7 +101,8 @@ export const formatFilterInfo = (filterInfo) => {
       const programMap = {
         'BSIT': 'BS in Information Technology',
         'BSCS': 'BS in Computer Science',
-        'BSEMC': 'BS in Entertainment and Multimedia Computing'
+        'BSEMC-DAT': 'BS Entertainment and Multimedia Computing - Major in Digital Animation Technology',
+        'BSEMC-GD': 'BS Entertainment and Multimedia Computing - Major in Game Development'
       };
       parts.push(programMap[filterInfo.program] || filterInfo.program);
     }

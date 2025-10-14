@@ -1,6 +1,5 @@
 // src/utils/scheduleHelpers.js
 
-
 export const parsePeriod = (periodStr) => {
   const [startStr, endStr] = periodStr.split(' - ');
   const parseTime = (timeStr) => {
@@ -13,8 +12,11 @@ export const parsePeriod = (periodStr) => {
   return [parseTime(startStr), parseTime(endStr)];
 };
 
-export const computeGroupKey = (event) =>
-  `${event.courseCode}-${event.program}-${event.year}-${event.block}`;
+// Updated to use baseCourseCode for consistent grouping with backend
+export const computeGroupKey = (event) => {
+  const baseCode = event.baseCourseCode || event.courseCode.replace(/[AL]$/, '');
+  return `${baseCode}-${event.program}-${event.year}-${event.block}`;
+};
 
 export const calculateFacultyUnits = (facultyName, schedule) => {
   let units = 0;
@@ -58,13 +60,12 @@ export const isFacultyAvailableForGroup = (facultyObj, selectedGroup, schedule) 
   return true;
 };
 
-
 export const parseTimeToMinutes = (timeStr) => {
   // Example: "9:00AM", "10:30PM"
   const match = timeStr.match(/^(\d{1,2}):(\d{2})(AM|PM)$/i);
   if (!match) return null;
 
-  let [ hh, mm, meridiem] = match;
+  let [hh, mm, meridiem] = match;
   let hours = parseInt(hh, 10);
   const minutes = parseInt(mm, 10);
   if (meridiem.toUpperCase() === "PM" && hours < 12) {
@@ -75,8 +76,6 @@ export const parseTimeToMinutes = (timeStr) => {
   return hours * 60 + minutes;
 };
 
-// src/utils/scheduleHelpers.js
-
 // Helper: Convert time string ("7:00 AM") into minutes.
 export const toMinutes = timeStr => {
   const [time, meridiem] = timeStr.split(' ');
@@ -86,19 +85,15 @@ export const toMinutes = timeStr => {
   return hours * 60 + minutes;
 };
 
-
-
-// in src/utils/scheduleHelpers.js
 export const computeEventUnits = event => {
   const [startStr, endStr] = event.period.split(' - ');
   const start = toMinutes(startStr);
-  const end   = toMinutes(endStr);
+  const end = toMinutes(endStr);
   const durationHours = (end - start) / 60;
 
-  // count each day‑token: M, T, W, Th, F, Sat, Sun
+  // count each day–token: M, T, W, Th, F, Sat, Sun
   const dayTokens = event.day.match(/M(?!h)|Th|T(?!h)|W|F|Sat|Sun/g) || [];
   const numDays = dayTokens.length;
 
   return durationHours * numDays;
 };
-

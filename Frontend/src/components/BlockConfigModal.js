@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/CreateSchedule.css';
 
-const BlockConfigModal = ({ courses, onClose, onSubmit }) => {
+const BlockConfigModal = ({ courses, semester, onClose, onSubmit }) => {
   
   const getOrdinal = (n) => {
     const s = ["th", "st", "nd", "rd"];
@@ -9,7 +9,15 @@ const BlockConfigModal = ({ courses, onClose, onSubmit }) => {
     return n + (s[(v - 20) % 10] || s[v] || s[0]);
   };
 
-  
+  const getSemesterDisplayName = (sem) => {
+    const semesterMap = {
+      "1st Sem": "First Semester",
+      "2nd Sem": "Second Semester",
+      "Midyear": "Midyear"
+    };
+    return semesterMap[sem] || sem;
+  };
+
   const initialConfig = {};
   courses.forEach(course => {
     const key = `${course.program}_${course.yearLevel}`;
@@ -38,7 +46,9 @@ const BlockConfigModal = ({ courses, onClose, onSubmit }) => {
         className="modal-window block-config-modal" 
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="modal-header">Block Configuration</div>
+        <div className="modal-header">
+          Block Configuration - {getSemesterDisplayName(semester)} Courses
+        </div>
         <form onSubmit={handleSubmit}>
           {Object.keys(config).map(key => (
             <div key={key} className="config-item">

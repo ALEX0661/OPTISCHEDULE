@@ -91,11 +91,18 @@ async def assign_faculty(request: AssignmentRequest):
     if not faculty:
         raise HTTPException(status_code=404, detail="Faculty not found")
 
-    group_key = (event["courseCode"], event["program"], event["block"])
+    # Use baseCourseCode for grouping (without suffix)
+    base_code = event.get("baseCourseCode", event["courseCode"].rstrip("AL"))
+    group_key = (base_code, event["program"], event["block"])
+    
+    # Find all events in the same group (both lecture and lab)
     group_events = [e for e in schedule_dict.values() if 
-                    (e["courseCode"], e["program"], e["block"]) == group_key]
+                    (e.get("baseCourseCode", e["courseCode"].rstrip("AL")), 
+                     e["program"], e["block"]) == group_key]
+    
     assigned_events = [e for e in schedule_dict.values() if e.get("faculty") == faculty["name"]]
 
+    # Check for conflicts
     for ge in group_events:
         for ae in assigned_events:
             if ae["day"] != ge["day"]:
@@ -106,6 +113,7 @@ async def assign_faculty(request: AssignmentRequest):
                     detail=f"Conflict on {ge['day']} for event {ae['schedule_id']}"
                 )
 
+    # Assign faculty to all events in the group
     for ge in group_events:
         ge["faculty"] = faculty["name"]
 
@@ -118,16 +126,23 @@ async def assign_faculty(request: AssignmentRequest):
 @router.post("/unassign")
 async def unassign_faculty_group(request: GroupUnassignmentRequest):
     try:
-        group_events = [
-            e for e in schedule_dict.values()
-            if e.get("courseCode") == request.courseCode and 
-               e.get("program") == request.program and 
-               e.get("block") == request.block
-        ]
+        # Use baseCourseCode for grouping (strip suffixes if needed)
+        group_events = []
+        for e in schedule_dict.values():
+            event_base_code = e.get("baseCourseCode", e.get("courseCode", "").rstrip("AL"))
+            
+            # Match on base course code, program, and block
+            if (event_base_code == request.courseCode.rstrip("AL") and 
+                e.get("program") == request.program and 
+                e.get("block") == request.block):
+                group_events.append(e)
+        
         if not group_events:
             raise HTTPException(status_code=404, detail="No matching events found for the provided group parameters")
+        
         for e in group_events:
             e["faculty"] = ""
+        
         return {"status": "success", "message": "Faculty unassigned from group", "events": group_events}
     except HTTPException as he:
         logger.error(f"HTTP error in unassign_faculty_group: {he.detail}")

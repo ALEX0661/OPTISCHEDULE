@@ -26,6 +26,7 @@ async def override_event(request: OverrideRequest):
         new_end_minutes = new_start_minutes + fixed_duration
         new_day = request.new_day if request.new_day and request.new_day.lower() != "auto" else event.get("day")
     
+        # Check for conflicts with other events in the same section
         for e in schedule_dict.values():
             if e["schedule_id"] == request.schedule_id:
                 continue

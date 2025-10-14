@@ -17,7 +17,8 @@ const FacultyEventsFilter = ({ filters, onFilterChange }) => {
             <option value="all">All Programs</option>
             <option value="BSIT">BS Information Technology</option>
             <option value="BSCS">BS Computer Science</option>
-            <option value="BSEMC">BS Entertainment and Multimedia Computing</option>
+            <option value="BSEMC-DAT">BS Entertainment and Multimedia Computing - Major in Digital Animation Technology</option>
+            <option value="BSEMC-GD">BS Entertainment and Multimedia Computing - Major in Game Development</option>
           </select>
         </div>
         <div className="filter-item">

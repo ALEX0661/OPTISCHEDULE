@@ -31,11 +31,17 @@ export const addCourse = async (course) => {
   }
 };
 
-export const updateCourse = async (courseCode, course) => {
+export const updateCourse = async (courseCode, program, course) => {
   try {
-    const response = await axios.put(`${BASE_URL}/courses/update/${courseCode}`, course, {
-      headers: { ...getAuthHeader() }
-    });
+    // Encode parameters to handle special characters
+    const encodedCourseCode = encodeURIComponent(courseCode);
+    const encodedProgram = encodeURIComponent(program);
+    
+    const response = await axios.put(
+      `${BASE_URL}/courses/update/${encodedCourseCode}/${encodedProgram}`, 
+      course,
+      { headers: { ...getAuthHeader() } }
+    );
     return response.data;
   } catch (error) {
     console.error('Error updating course:', error);
@@ -43,11 +49,16 @@ export const updateCourse = async (courseCode, course) => {
   }
 };
 
-export const deleteCourse = async (courseCode) => {
+export const deleteCourse = async (courseCode, program) => {
   try {
-    const response = await axios.delete(`${BASE_URL}/courses/delete/${courseCode}`, {
-      headers: { ...getAuthHeader() }
-    });
+    // Encode parameters to handle special characters
+    const encodedCourseCode = encodeURIComponent(courseCode);
+    const encodedProgram = encodeURIComponent(program);
+    
+    const response = await axios.delete(
+      `${BASE_URL}/courses/delete/${encodedCourseCode}/${encodedProgram}`,
+      { headers: { ...getAuthHeader() } }
+    );
     return response.data;
   } catch (error) {
     console.error('Error deleting course:', error);
@@ -55,11 +66,17 @@ export const deleteCourse = async (courseCode) => {
   }
 };
 
-export const uploadExcel = async (file) => {
+export const uploadExcel = async (file, sheetName = null) => {
   try {
     const formData = new FormData();
     formData.append("file", file);
-    const response = await axios.post(`${BASE_URL}/upload`, formData, {
+    
+    let url = `${BASE_URL}/upload`;
+    if (sheetName) {
+      url += `?sheet_name=${encodeURIComponent(sheetName)}`;
+    }
+    
+    const response = await axios.post(url, formData, {
       headers: { 
         ...getAuthHeader(),
         'Content-Type': 'multipart/form-data'

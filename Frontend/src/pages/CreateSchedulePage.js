@@ -26,7 +26,6 @@ const CreateSchedulePage = () => {
     validYears.push(year);
   }
 
-  
   const loadingMessages = {
     addCourse: [
       "Adding course to the curriculum...",
@@ -44,19 +43,17 @@ const CreateSchedulePage = () => {
       "Purging selected courses from records..."
     ],
     importCourses: [
-      "Processing imported course data...",
+      "Processing uploaded course data...",
       "Validating and preparing course information...",
       "Integrating new courses into the system..."
     ]
   };
 
-  
   const getRandomLoadingMessage = (category) => {
     const messages = loadingMessages[category];
     return messages[Math.floor(Math.random() * messages.length)];
   };
 
-  
   const getScheduleGenerationMessage = (progress) => {
     if (progress < 30) {
       return "Initializing scheduling engine and gathering course data...";
@@ -78,7 +75,7 @@ const CreateSchedulePage = () => {
   };
 
   const [startingYear, setStartingYear] = useState(currentYear);
-  const [semester, setSemester] = useState('1st sem');
+  const [semester, setSemester] = useState('1st Sem');
   const academicYear = `${startingYear}-${startingYear + 1}`;
   const scheduleName = `${academicYear} ${semester}`;
 
@@ -106,6 +103,7 @@ const CreateSchedulePage = () => {
 
   const [coursesLoading, setCoursesLoading] = useState(true);
   const [coursesError, setCoursesError] = useState('');
+  const [uploadedSemester, setUploadedSemester] = useState(null);
 
   const navigate = useNavigate();
   const evtSourceRef = useRef(null);
@@ -149,25 +147,44 @@ const CreateSchedulePage = () => {
     return matchesProgram && matchesYear && matchesQuery;
   });
 
+  const getSemesterDisplayName = (sem) => {
+    const semesterMap = {
+      "1st Sem": "First Semester",
+      "2nd Sem": "Second Semester",
+      "Midyear": "Midyear"
+    };
+    return semesterMap[sem] || sem;
+  };
+
   const handleImportExcel = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    
+    // Map semester values to sheet names
+    const sheetNameMap = {
+      "1st Sem": "First Semester",
+      "2nd Sem": "Second Semester",
+      "Midyear": "Midyear"
+    };
+    const sheetName = sheetNameMap[semester];
+    
     try {
       setLoading(true);
       setLoadingMessage("Extracting course data from Excel file...");
-      const data = await uploadExcel(file);
+      const data = await uploadExcel(file, sheetName);
       if (data.courses) {
         setImportedCourses(data.courses);
+        setUploadedSemester(semester);
         setBlocksConfigured(false);
         setShowBlockModal(true);
       } else {
-        setSuccessModalMessage("Error importing Excel file: " + (data.error || "Unknown error"));
+        setSuccessModalMessage("Error uploading Excel file: " + (data.error || "Unknown error"));
         setModalType("error");
         setShowSuccessModal(true);
       }
     } catch (error) {
-      console.error("Error importing Excel file:", error);
-      setSuccessModalMessage("Error importing Excel file.");
+      console.error("Error uploading Excel file:", error);
+      setSuccessModalMessage(error.response?.data?.detail || "Error uploading Excel file.");
       setModalType("error");
       setShowSuccessModal(true);
     } finally {
@@ -197,12 +214,10 @@ const CreateSchedulePage = () => {
     setLoading(true);
     setLoadingMessage(getRandomLoadingMessage('importCourses'));
     try {
-      
       const results = await Promise.allSettled(
         importedCourses.map(course => addCourse(course))
       );
-  
-      
+
       const successfulCourses = [];
       const failedCourses = [];
       importedCourses.forEach((course, index) => {
@@ -213,15 +228,16 @@ const CreateSchedulePage = () => {
           failedCourses.push(course);
         }
       });
-  
+
       setCourses(prevCourses => [...prevCourses, ...successfulCourses]);
       setImportedCourses(failedCourses);
       if (failedCourses.length === 0) {
         setBlocksConfigured(false);
+        setUploadedSemester(null);
       }
-  
+
       if (failedCourses.length === 0) {
-        setSuccessModalMessage("Imported courses saved successfully!");
+        setSuccessModalMessage("Uploaded courses saved successfully!");
         setModalType("success");
       } else {
         setSuccessModalMessage(
@@ -231,8 +247,8 @@ const CreateSchedulePage = () => {
       }
       setShowSuccessModal(true);
     } catch (error) {
-      console.error("Error saving imported courses:", error);
-      setSuccessModalMessage("Error saving imported courses.");
+      console.error("Error saving uploaded courses:", error);
+      setSuccessModalMessage("Error saving uploaded courses.");
       setModalType("error");
       setShowSuccessModal(true);
     } finally {
@@ -278,10 +294,12 @@ const CreateSchedulePage = () => {
     setLoading(true);
     setLoadingMessage(getRandomLoadingMessage('updateCourse'));
     try {
-      const response = await updateCourse(updatedCourse.courseCode, updatedCourse);
+      const response = await updateCourse(updatedCourse.courseCode, updatedCourse.program, updatedCourse);
       if (response.status === 'success') {
         const courseObj = response.course || updatedCourse;
-        setCourses(courses.map(c => c.courseCode === courseObj.courseCode ? courseObj : c));
+        setCourses(courses.map(c => 
+          c.courseCode === courseObj.courseCode && c.program === courseObj.program ? courseObj : c
+        ));
         setSuccessModalMessage("Course updated successfully!");
         setModalType("success");
         setShowSuccessModal(true);
@@ -301,16 +319,17 @@ const CreateSchedulePage = () => {
     }
   };
 
-  const handleCheckboxChange = (courseCode, isChecked) => {
+  const handleCheckboxChange = (courseCode, program, isChecked) => {
+    const courseIdentifier = `${courseCode}_${program}`;
     setSelectedCourses(isChecked 
-      ? [...selectedCourses, courseCode] 
-      : selectedCourses.filter(code => code !== courseCode)
+      ? [...selectedCourses, courseIdentifier] 
+      : selectedCourses.filter(id => id !== courseIdentifier)
     );
   };
 
   const handleSelectAll = (isChecked) => {
     setSelectedCourses(isChecked 
-      ? filteredCourses.map(c => c.courseCode) 
+      ? filteredCourses.map(c => `${c.courseCode}_${c.program}`) 
       : []
     );
   };
@@ -323,17 +342,23 @@ const CreateSchedulePage = () => {
     setLoadingMessage(getRandomLoadingMessage('deleteCourse'));
     try {
       const deletionResults = await Promise.allSettled(
-        selectedCourses.map(code => deleteCourse(code))
+        selectedCourses.map(id => {
+          const [courseCode, program] = id.split('_');
+          return deleteCourse(courseCode, program);
+        })
       );
-  
+
       const failedDeletions = deletionResults.filter(result => result.status === 'rejected');
       
       setCourses(prevCourses =>
-        prevCourses.filter(course => !selectedCourses.includes(course.courseCode))
+        prevCourses.filter(course => {
+          const courseId = `${course.courseCode}_${course.program}`;
+          return !selectedCourses.includes(courseId);
+        })
       );
       
       setSelectedCourses([]);
-  
+
       if (failedDeletions.length === 0) {
         setSuccessModalMessage("Courses deleted successfully!");
         setModalType("success");
@@ -395,7 +420,7 @@ const CreateSchedulePage = () => {
           evtSource.close();
           setLoading(false);
           setIsGeneratingSchedule(false);
-          setSuccessModalMessage("Error receiving progress updates. Please try again.");
+          setSuccessModalMessage("Error No Feasible Schedule found.");
           setModalType("error");
           setShowSuccessModal(true);
         };
@@ -432,19 +457,16 @@ const CreateSchedulePage = () => {
       <div className="schedule-name-card">
         <label className="section-label">Select Academic Year</label>
         <div className="academic-year-group">
-        <select
-  value={startingYear}
-  onChange={(e) => setStartingYear(parseInt(e.target.value, 10))}
->
-  {validYears.map(year => (
-    <option key={year} value={year}>
-      {year}
-      <span className="year-span"> - {year + 1}</span>
-    </option>
-  ))}
-</select>
-
-          
+          <select
+            value={startingYear}
+            onChange={(e) => setStartingYear(parseInt(e.target.value, 10))}
+          >
+            {validYears.map(year => (
+              <option key={year} value={year}>
+                {year} - {year + 1}
+              </option>
+            ))}
+          </select>
         </div>
         <label className="section-label" style={{ marginTop: '15px' }}>Semester</label>
         <select value={semester} onChange={(e) => setSemester(e.target.value)}>
@@ -452,7 +474,6 @@ const CreateSchedulePage = () => {
           <option value="2nd Sem">2nd Semester</option>
           <option value="Midyear">Midyear</option>
         </select>
-
       </div>
 
       <div className="filters-card">
@@ -464,8 +485,9 @@ const CreateSchedulePage = () => {
               <option value="All Programs">All Programs</option>
               <option value="BSIT">BS Information Technology</option>
               <option value="BSCS">BS Computer Science</option>
-              <option value="BSEMC">BS Entertainment and Multimedia Computing</option>
-            </select>
+              <option value="BSEMC-DAT">BS Entertainment and Multimedia Computing - Major in Digital Animation Technology</option>
+              <option value="BSEMC-GD">BS Entertainment and Multimedia Computing - Major in Game Development</option>
+          </select>
           </div>
           <div className="filter-item">
             <label>Year</label>
@@ -496,7 +518,7 @@ const CreateSchedulePage = () => {
             className="import-excel-btn"
             onClick={() => document.getElementById('excel-file-input').click()}
           >
-            Import Excel File
+            Upload Courses
           </button>
           <input
             id="excel-file-input"
@@ -509,7 +531,7 @@ const CreateSchedulePage = () => {
 
         {blocksConfigured && importedCourses.length > 0 && (
           <div className="import-preview-section">
-            <h3>Imported Courses Preview <span className="course-counter">({importedCourses.length} courses)</span></h3>
+            <h3>Uploaded {getSemesterDisplayName(uploadedSemester)} Courses Preview <span className="course-counter">({importedCourses.length} courses)</span></h3>
             <table className="course-table">
               <thead>
                 <tr>
@@ -525,7 +547,7 @@ const CreateSchedulePage = () => {
               </thead>
               <tbody>
                 {importedCourses.map(course => (
-                  <tr key={course.courseCode}>
+                  <tr key={`${course.courseCode}_${course.program}`}>
                     <td>{course.courseCode}</td>
                     <td>{course.title}</td>
                     <td>{course.program}</td>
@@ -534,8 +556,12 @@ const CreateSchedulePage = () => {
                     <td>{course.unitsLab}</td>
                     <td>{course.blocks}</td>
                     <td>
-                      <button onClick={() => removeImportedCourse(course.courseCode)}>
-                        🗑️
+                      <button 
+                        className="remove-btn" 
+                        onClick={() => removeImportedCourse(course.courseCode)}
+                        title="Remove course"
+                      >
+                        ✕
                       </button>
                     </td>
                   </tr>
@@ -544,7 +570,7 @@ const CreateSchedulePage = () => {
             </table>
             <div className="preview-save">
               <button className="import-excel-btn" onClick={handleSaveImportedCourses}>
-                Save Imported Courses
+                Save Uploaded Courses
               </button>
             </div>
           </div>
@@ -589,29 +615,36 @@ const CreateSchedulePage = () => {
                   </td>
                 </tr>
               ) : filteredCourses.length > 0 ? (
-                filteredCourses.map(course => (
-                  <tr key={course.courseCode}>
-                    <td>
-                      <input
-                        type="checkbox"
-                        checked={selectedCourses.includes(course.courseCode)}
-                        onChange={(e) => handleCheckboxChange(course.courseCode, e.target.checked)}
-                      />
-                    </td>
-                    <td>{course.courseCode}</td>
-                    <td>{course.title}</td>
-                    <td>{course.program}</td>
-                    <td>{course.yearLevel}</td>
-                    <td>{course.unitsLecture}</td>
-                    <td>{course.unitsLab}</td>
-                    <td>{course.blocks}</td>
-                    <td>
-                      <button className="edit-btn" onClick={() => handleEditCourse(course)}>
-                        🖊
-                      </button>
-                    </td>
-                  </tr>
-                ))
+                filteredCourses.map(course => {
+                  const courseId = `${course.courseCode}_${course.program}`;
+                  return (
+                    <tr key={courseId}>
+                      <td>
+                        <input
+                          type="checkbox"
+                          checked={selectedCourses.includes(courseId)}
+                          onChange={(e) => handleCheckboxChange(course.courseCode, course.program, e.target.checked)}
+                        />
+                      </td>
+                      <td>{course.courseCode}</td>
+                      <td>{course.title}</td>
+                      <td>{course.program}</td>
+                      <td>{course.yearLevel}</td>
+                      <td>{course.unitsLecture}</td>
+                      <td>{course.unitsLab}</td>
+                      <td>{course.blocks}</td>
+                      <td>
+                        <button 
+                          className="edit-btn" 
+                          onClick={() => handleEditCourse(course)}
+                          title="Edit course"
+                        >
+                          ✎
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
               ) : (
                 <tr>
                   <td colSpan="9" className="centered-msg">
@@ -631,7 +664,6 @@ const CreateSchedulePage = () => {
               )}
             </tbody>
           </table>
-          
         </div>
       </div>
 
@@ -641,7 +673,7 @@ const CreateSchedulePage = () => {
         </button>
         {!(scheduleName && courses.length) && (
           <p className="error-msg">
-            Please enter a valid schedule name and import/add courses.
+            Please enter a valid schedule name and upload/add courses.
           </p>
         )}
       </div>
@@ -675,6 +707,7 @@ const CreateSchedulePage = () => {
       {showBlockModal && (
         <BlockConfigModal
           courses={importedCourses}
+          semester={uploadedSemester}
           onClose={() => setShowBlockModal(false)}
           onSubmit={handleBlockConfigSubmit}
         />
@@ -704,11 +737,11 @@ const CreateSchedulePage = () => {
           cancelLabel="Cancel"
           type="warning"
         />
-        
       )}
+      
       <button className="floating-add-btn" onClick={handleAddCourse}>
-            +
-          </button>
+        +
+      </button>
     </div>
   );
 };

@@ -9,7 +9,7 @@ cred = credentials.Certificate(cred_path)
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-_courses_cache = None
+_courses_cache = None 
 _rooms_cache = None
 _time_settings_cache = None
 _days_cache = None

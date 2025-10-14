@@ -374,8 +374,10 @@ const ScheduleManagement = () => {
           onCancel={() => setUnassignModalData(null)}
           onConfirm={() => {
             const sampleEvent = unassignModalData.groupEvents[0];
+            // Use baseCourseCode if available, otherwise strip suffix from courseCode
+            const baseCourseCode = sampleEvent.baseCourseCode || sampleEvent.courseCode.replace(/[AL]$/, '');
             const groupParams = {
-              courseCode: sampleEvent.courseCode,
+              courseCode: baseCourseCode,
               program: sampleEvent.program,
               block: sampleEvent.block,
             };
