@@ -52,7 +52,7 @@ class SchedulerConfig:
     def should_use_domain_filtering(cls, available_slots: int) -> bool:
         """Determine if domain filtering should be applied"""
         return available_slots > cls.MAX_DOMAIN_SIZE_PER_VARIABLE
-    
+     
     @classmethod
     def get_filtered_domain(cls, available_slots: list) -> list:
         """
