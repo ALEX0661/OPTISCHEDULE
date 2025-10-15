@@ -52,6 +52,9 @@ class HierarchicalScheduler:
         self.schedule_id = 1
         self.phase_stats = {}
         
+        # Track courses with both lecture and lab units
+        self.courses_with_both = set()
+        
     def update_progress(self, value):
         """Update progress state if process_id exists"""
         if self.process_id:
@@ -86,6 +89,12 @@ class HierarchicalScheduler:
         scored_courses = []
         
         for course in courses:
+            # Track courses with both lecture and lab units
+            has_lecture = course.get('unitsLecture', 0) > 0
+            has_lab = course.get('unitsLab', 0) > 0
+            if has_lecture and has_lab:
+                self.courses_with_both.add(course['courseCode'])
+            
             # Calculate complexity score
             priority_score = (
                 course.get('yearLevel', 0) * 1000 +
@@ -96,7 +105,6 @@ class HierarchicalScheduler:
             
             # Determine phase based on constraints
             blocks = course.get('blocks', 1)
-            has_lab = course.get('unitsLab', 0) > 0
             year_level = course.get('yearLevel', 0)
             
             # Phase 1: Flexible courses (1st year, lecture-only) - EASIEST
@@ -503,7 +511,11 @@ class HierarchicalScheduler:
             m2 = int((hr2 - int(hr2)) * 60)
             t2 = f"{int(hr2)%12 or 12}:{m2:02d} {'AM' if hr2<12 else 'PM'}"
             
-            display_code = f"{sess['code']}A" if sess['type'] == 'lecture' else f"{sess['code']}L"
+            # Only add suffix if course has both lecture and lab units
+            if sess['code'] in self.courses_with_both:
+                display_code = f"{sess['code']}A" if sess['type'] == 'lecture' else f"{sess['code']}L"
+            else:
+                display_code = sess['code']
             
             schedule.append({
                 'schedule_id': sess['id'],
