@@ -618,3 +618,4 @@ def generate_schedule(process_id=None):
         if process_id:
             progress_state[process_id] = -1
         return "impossible"
+    
