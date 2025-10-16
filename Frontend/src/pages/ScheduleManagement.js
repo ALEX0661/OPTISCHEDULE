@@ -19,6 +19,7 @@ import OverrideModal from '../components/OverrideModal';
 import UnassignConfirmationModal from '../components/UnassignConfirmationModal';
 import SuccessModal from '../components/SuccessModal';
 import ConfirmationModal from '../components/ConfirmationModal';
+import RoomView from '../components/RoomView';
 import { computeGroupKey } from '../utils/scheduleHelpers';
 import '../styles/ScheduleManagement.css';
 import noFacultyLogo from '../assets/noFacultyLogo.png';
@@ -55,6 +56,7 @@ const ScheduleManagement = () => {
   const [successModalData, setSuccessModalData] = useState(null);
   const [confirmationModalData, setConfirmationModalData] = useState(null);
   const [isFacultyLoading, setIsFacultyLoading] = useState(false);
+  const [isRoomView, setIsRoomView] = useState(false);
 
   const daysOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
@@ -273,18 +275,7 @@ const ScheduleManagement = () => {
       console.log('Override response:', response);
       if (response.status === 'success') {
         setSuccessModalData({ message: 'Override saved successfully.', type: 'success' });
-        const data = await generateSchedule(false, true);
-        if (data.status === 'success' && data.schedule) {
-          setSchedule(data.schedule.map(event => ({
-            ...event,
-            overlapDetails: event.overlapDetails || { hasOverlap: false, reasons: [], conflictingEvents: [] }
-          })));
-          setScheduleError(false);
-          if (data.rooms) setRoomsData(data.rooms);
-        } else {
-          setSchedule([]);
-          setScheduleError(true);
-        }
+        await refreshSchedule();
       } else {
         setSuccessModalData({ message: 'Override failed: ' + (response.detail || 'Error occurred.'), type: 'error' });
       }
@@ -293,6 +284,25 @@ const ScheduleManagement = () => {
       setSuccessModalData({ message: 'Error: ' + error.message, type: 'error' });
     } finally {
       closeOverrideModal();
+    }
+  };
+
+  const refreshSchedule = async () => {
+    try {
+      const data = await generateSchedule(false, true);
+      if (data.status === 'success' && data.schedule) {
+        setSchedule(data.schedule.map(event => ({
+          ...event,
+          overlapDetails: event.overlapDetails || { hasOverlap: false, reasons: [], conflictingEvents: [] }
+        })));
+        setScheduleError(false);
+        if (data.rooms) setRoomsData(data.rooms);
+      } else {
+        setSchedule([]);
+        setScheduleError(true);
+      }
+    } catch (error) {
+      console.error('Error refreshing schedule:', error);
     }
   };
 
@@ -313,8 +323,43 @@ const ScheduleManagement = () => {
     setSuccessModalData(null);
   };
 
+  const toggleViewMode = () => {
+    setIsRoomView(!isRoomView);
+  };
+
+  if (isRoomView) {
+    return (
+      <div className="schedule-management-container">
+        <RoomView 
+          schedule={schedule}
+          onScheduleUpdate={refreshSchedule}
+          onClose={toggleViewMode}
+        />
+        {loading && (
+          <div className="loading-overlay">
+            <div className="spinner"></div>
+            <p>{loadingMessage}</p>
+          </div>
+        )}
+        {successModalData && (
+          <SuccessModal
+            message={successModalData.message}
+            type={successModalData.type}
+            onClose={closeSuccessModal}
+          />
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="schedule-management-container">
+      <div className="view-toggle-container">
+        <button className="view-toggle-btn" onClick={toggleViewMode}>
+          🏛️ View Schedule (Room View)
+        </button>
+      </div>
+      
       <div className="content">
         <div className="left-panel">
           <ScheduleFilters
@@ -374,7 +419,6 @@ const ScheduleManagement = () => {
           onCancel={() => setUnassignModalData(null)}
           onConfirm={() => {
             const sampleEvent = unassignModalData.groupEvents[0];
-            // Use baseCourseCode if available, otherwise strip suffix from courseCode
             const baseCourseCode = sampleEvent.baseCourseCode || sampleEvent.courseCode.replace(/[AL]$/, '');
             const groupParams = {
               courseCode: baseCourseCode,

@@ -45,7 +45,7 @@ class HierarchicalScheduler:
         self.lab_starts = []
         
         # Schedule tracking across phases
-        self.global_schedule = []
+        self.global_schedule = []  # Now used to store cumulative schedule for prior fixed intervals
         self.occupied_slots = defaultdict(set)  # (room_type, room_idx) -> set of time slots
         self.section_occupied = defaultdict(set)  # (prog, yr, blk) -> set of time slots
         
@@ -69,6 +69,11 @@ class HierarchicalScheduler:
         self.update_progress(15)
         
         self.rooms = load_rooms()
+        # Log room counts for debugging
+        if 'lecture' in self.rooms:
+            logger.info(f"Loaded {len(self.rooms['lecture'])} lecture rooms")
+        if 'lab' in self.rooms:
+            logger.info(f"Loaded {len(self.rooms['lab'])} lab rooms")
         self.update_progress(25)
         
         self.time_settings = load_time_settings()
@@ -137,7 +142,7 @@ class HierarchicalScheduler:
             base = d * self.inc_day
             self.lab_starts.extend(range(base, base + self.inc_day - 2))
     
-    def get_available_time_slots(self, section_key, duration, is_lab=False, max_slots=500):
+    def get_available_time_slots(self, section_key, duration, is_lab=False, max_slots=1000):
         """
         Get available time slots that don't conflict with existing schedule.
         Returns list of valid start times, limited to max_slots for solver efficiency.
@@ -178,7 +183,7 @@ class HierarchicalScheduler:
         Calculate timeout for phase based on phase difficulty.
         Easy phases get less time, hard phases get more time.
         """
-        base_times = [120, 180, 600]  # Increased from [50, 100, 300]
+        base_times = [150, 200, 700]  # Slightly increased for more constraints
         
         if phase_num <= len(base_times):
             timeout = base_times[phase_num - 1]
@@ -246,6 +251,22 @@ class HierarchicalScheduler:
         section_intervals = defaultdict(list)
         room_intervals = defaultdict(list)
         
+        # Add prior fixed intervals from global_schedule to enforce inter-phase no-overlaps
+        prior_count = 0
+        for event in self.global_schedule:
+            rt = event['_room_type']
+            if rt not in self.rooms:
+                continue  # Skip invalid types
+            ri = event['_room_idx']
+            ss = event['_start_slot']
+            dd = event['_duration']
+            fixed_end = ss + dd
+            fixed_iv = model.NewIntervalVar(ss, dd, fixed_end, f"prior_fixed_{event['schedule_id']}")
+            room_intervals[(rt, ri)].append(fixed_iv)
+            prior_count += 1
+        if prior_count > 0:
+            logger.info(f"Added {prior_count} prior fixed intervals for room constraints")
+        
         course_progress_start = 50 + (phase_num - 1) * 40 // total_phases
         course_progress_end = 50 + phase_num * 40 // total_phases
         
@@ -280,12 +301,14 @@ class HierarchicalScheduler:
         
         # Configure solver
         solver.parameters.max_time_in_seconds = timeout
-        solver.parameters.num_search_workers = 8
+        solver.parameters.num_search_workers = 12  # Increased for better parallelism
         solver.parameters.log_search_progress = True
+        solver.parameters.linearization_level = 2  # Better for optional + fixed intervals
         # More aggressive search for harder phases
         if phase_num == total_phases:
             solver.parameters.use_absl_random = True
             solver.parameters.random_seed = random.randint(0, 1000000)
+            solver.parameters.cp_model_probing_level = 2  # Enhanced probing
         
         status = solver.Solve(model)
         
@@ -346,7 +369,7 @@ class HierarchicalScheduler:
         start_vars = []
         
         # Get available time slots - aggressive domain limiting
-        available_starts = self.get_available_time_slots(section_key, duration, is_lab, max_slots=300)
+        available_starts = self.get_available_time_slots(section_key, duration, is_lab, max_slots=1000)
         
         if not available_starts:
             logger.warning(f"No available slots for {code} {sess_type} block {blk}")
@@ -354,6 +377,11 @@ class HierarchicalScheduler:
             available_starts = self.lab_starts if is_lab else list(range(self.total_inc - duration + 1))
             if not available_starts:
                 return None
+        
+        num_rooms = len(self.rooms[sess_type])
+        # Always enforce for small num_rooms like 10
+        enforce_room_constraints = True
+        logger.info(f"Enforcing room constraints for {sess_type}: {num_rooms} rooms")
         
         for i in range(units):
             # Start time variable - constrained to available slots
@@ -375,16 +403,15 @@ class HierarchicalScheduler:
             model.Add(s >= dvar * self.inc_day)
             model.Add(s < (dvar + 1) * self.inc_day)
             
-            # Room variable
-            rv = model.NewIntVar(0, len(self.rooms[sess_type]) - 1, f"{code}_{sess_type}_{blk}_{i}_room")
+            # Room variable - full domain; constraints handle availability
+            rv = model.NewIntVar(0, num_rooms - 1, f"{code}_{sess_type}_{blk}_{i}_room")
             
             # Interval for section conflicts
             iv = model.NewIntervalVar(s, duration, e, f"iv_{self.schedule_id}")
             section_intervals[section_key].append(iv)
             
-            # Optional intervals for room conflicts (only if not too many rooms)
-            num_rooms = len(self.rooms[sess_type])
-            if num_rooms <= 50:  # Avoid explosion with too many rooms
+            # Optional intervals for room conflicts
+            if enforce_room_constraints:
                 for r_idx in range(num_rooms):
                     lit = model.NewBoolVar(f"use_{self.schedule_id}_room_{r_idx}")
                     model.Add(rv == r_idx).OnlyEnforceIf(lit)
@@ -574,6 +601,7 @@ class HierarchicalScheduler:
                 return "impossible"
             
             combined_schedule.extend(phase_schedule)
+            self.global_schedule = combined_schedule[:]  # Update cumulative for next phases
         
         # Sort final schedule
         combined_schedule.sort(key=lambda x: (
@@ -618,4 +646,3 @@ def generate_schedule(process_id=None):
         if process_id:
             progress_state[process_id] = -1
         return "impossible"
-    
