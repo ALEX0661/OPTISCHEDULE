@@ -4,7 +4,7 @@ import noScheduleLogo from '../assets/noScheduleLogo.png';
 
 const ScheduleGrid = ({
   groupedSchedule,
-  daysOrder,
+  daysOrder = [],
   selectedGroup,
   onToggleGroupSelection,
   onOverride,
@@ -12,17 +12,21 @@ const ScheduleGrid = ({
   onSaveFinalSchedule,
   onSelectExistingSchedule,
   existingSchedules,
-  fetchError  
+  fetchError,
+  onToggleViewMode // Prop for room view toggle
 }) => {
-  daysOrder.forEach((day) => {
-    if (groupedSchedule[day]) {
-      groupedSchedule[day].sort((a, b) => {
-        const [aStart] = parsePeriod(a.period);
-        const [bStart] = parsePeriod(b.period);
-        return aStart - bStart;
-      });
-    }
-  });
+  // Guard against undefined/non-array daysOrder
+  if (daysOrder && Array.isArray(daysOrder)) {
+    daysOrder.forEach((day) => {
+      if (groupedSchedule[day]) {
+        groupedSchedule[day].sort((a, b) => {
+          const [aStart] = parsePeriod(a.period);
+          const [bStart] = parsePeriod(b.period);
+          return aStart - bStart;
+        });
+      }
+    });
+  }
 
   const totalEvents = daysOrder.reduce((acc, day) => {
     return acc + (groupedSchedule[day] ? groupedSchedule[day].length : 0);
@@ -48,8 +52,16 @@ const ScheduleGrid = ({
         </div>
       </div>
 
-      <div className="schedule-name-display">
-        <h2>Generated Schedule For A.Y. {displayScheduleName}</h2>
+      {/* Updated schedule name section with button on the right */}
+      <div className="schedule-name-display schedule-header-row">
+        <div className="schedule-title-wrapper">
+          <h2>Generated Schedule For A.Y. {displayScheduleName}</h2>
+        </div>
+        {onToggleViewMode && (
+          <button className="view-toggle-btn" onClick={onToggleViewMode}>
+            Switch to Room View
+          </button>
+        )}
       </div>
 
       {totalEvents === 0 ? (

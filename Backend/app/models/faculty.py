@@ -13,7 +13,7 @@ class Faculty(BaseModel):
     units: float = 0.0
 
 class AssignmentRequest(BaseModel):
-    schedule_id: int
+    schedule_id: str
     faculty_id: int
 
 class GroupUnassignmentRequest(BaseModel):

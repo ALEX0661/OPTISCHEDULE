@@ -63,10 +63,20 @@ export const saveFinalSchedule = async (scheduleData) => {
 
 export const overrideEvent = async (overrideDetails) => {
   try {
-    const response = await api.post('/override/event', overrideDetails);
+    // Ensure the payload matches the expected schema
+    const payload = {
+      schedule_id: String(overrideDetails.schedule_id),
+      new_start: String(overrideDetails.new_start), // Must be in "HH:MM" format
+      new_room: String(overrideDetails.new_room),
+      new_day: overrideDetails.new_day || null // Optional, can be null
+    };
+    
+    console.log('Override payload:', payload);
+    
+    const response = await api.post('/override/event', payload);
     return response.data;
   } catch (error) {
-    console.error('Error in overrideEvent:', error);
+    console.error('Error in overrideEvent:', error.response?.data || error.message);
     throw error;
   }
 };

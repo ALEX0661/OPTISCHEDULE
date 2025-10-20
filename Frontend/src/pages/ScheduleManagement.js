@@ -22,8 +22,8 @@ import ConfirmationModal from '../components/ConfirmationModal';
 import RoomView from '../components/RoomView';
 import { computeGroupKey } from '../utils/scheduleHelpers';
 import '../styles/ScheduleManagement.css';
-import noFacultyLogo from '../assets/noFacultyLogo.png';
-import FacultyLoader from '../animations/FacultyLoader';
+import '../styles/FacultyPanel.css';
+
 
 const ScheduleManagement = () => {
   const [schedule, setSchedule] = useState([]);
@@ -354,12 +354,6 @@ const ScheduleManagement = () => {
 
   return (
     <div className="schedule-management-container">
-      <div className="view-toggle-container">
-        <button className="view-toggle-btn" onClick={toggleViewMode}>
-          🏛️ View Schedule (Room View)
-        </button>
-      </div>
-      
       <div className="content">
         <div className="left-panel">
           <ScheduleFilters
@@ -378,6 +372,7 @@ const ScheduleManagement = () => {
             onSelectExistingSchedule={handleSelectExistingSchedule}
             existingSchedules={existingSchedules}
             fetchError={scheduleError}
+            onToggleViewMode={toggleViewMode}
           />
           {loading && (
             <div className="loading-overlay">

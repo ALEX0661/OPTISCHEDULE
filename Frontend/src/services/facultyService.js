@@ -21,10 +21,16 @@ export const getFacultyList = async () => {
 
 export const assignFacultyToEvent = async (schedule_id, faculty_id) => {
   try {
-    const response = await api.post('/faculty/assign', { schedule_id, faculty_id }, { headers: { ...getAuthHeader() } });
+    // Ensure schedule_id is a string
+    const payload = { 
+      schedule_id: String(schedule_id), 
+      faculty_id: Number(faculty_id) 
+    };
+    console.log('Assigning faculty with payload:', payload);
+    const response = await api.post('/faculty/assign', payload, { headers: { ...getAuthHeader() } });
     return response.data;
   } catch (error) {
-    console.error('Error in assignFacultyToEvent:', error);
+    console.error('Error in assignFacultyToEvent:', error.response?.data || error);
     throw error;
   }
 };

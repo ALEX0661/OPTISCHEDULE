@@ -1,0 +1,273 @@
+/* FacultyPanel.css - Extracted styles for the right-hand faculty sidebar panel */
+
+/* Assumes shared :root variables from main CSS; add @import if needed */
+
+.card {
+  background-color: var(--white);
+  border-radius: var(--radius);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  padding: 11px; 
+}
+
+.filters-card {
+  padding-bottom: 6px; 
+}
+
+.filters-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.filters-icon {
+  color: var(--primary);
+  margin-right: 7px; 
+}
+
+.filters-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: 10px; 
+  align-items: start;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px; 
+}
+
+.filter-label {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--dark-gray);
+  margin-bottom: 2px; 
+}
+
+.filter-select {
+  padding: 4px 7px; 
+  border: 1px solid var(--border-gray);
+  border-radius: 3px;
+  font-size: 10px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.1);
+}
+
+.custom-checkbox {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 79px; 
+  left: 12px;
+  top: 4px;
+  position: relative;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  width: 14px; 
+  height: 14px; 
+  cursor: pointer;
+  accent-color: var(--primary);
+}
+
+.faculty-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 11px; 
+}
+
+.faculty-title {
+  font-weight: 600;
+  color: #333;
+}
+
+.faculty-search {
+  padding: 4px 9px; 
+  border: 1px solid var(--border-gray);
+  border-radius: 2px;
+  font-size: 9px; 
+  width: 100%;
+  outline: none;
+  margin-bottom: 10px; 
+}
+
+.faculty-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 7px; 
+  max-height: 352px; 
+  overflow-y: auto;
+}
+
+.faculty-card {
+  width: 100%;
+  padding: 11px 9px; 
+  min-height: 50px;
+  border: 1px solid var(--border-gray);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  gap: 9px; 
+  cursor: pointer;
+  transition: box-shadow 0.3s;
+  overflow: hidden;
+}
+
+.faculty-card:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.faculty-card.disabled {
+  opacity: 0.3;
+  transition: opacity 0.2s ease;
+}
+
+.faculty-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 0px; 
+}
+
+.faculty-name-text {
+  font-weight: 530;
+  font-size: 9px; 
+  line-height: 0.88;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.faculty-status {
+  font-size: 8px; 
+  color: var(--dark-gray);
+  margin-top: 2px; 
+  display: flex;
+  align-items: center;
+}
+
+.status-indicator {
+  width: 9px; 
+  height: 9px; 
+  border-radius: 50%;
+  margin-left: 2px; 
+}
+
+.status-green {
+  background-color: var(--green);
+}
+
+.status-yellow {
+  background-color: var(--yellow);
+}
+
+.status-red {
+  background-color: var(--red);
+}
+
+.unassigned-indicator {
+  font-style: italic;
+  color: var(--dark-gray);
+}
+
+.toggle-faculty-btn {
+  background-color: transparent;
+  color: var(--green);
+  border: 1px solid var(--green);
+  padding: 3px 7px; 
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, transform 0.2s;
+}
+
+.toggle-faculty-btn:hover {
+  color: var(--white);
+  transform: translateY(-1px);
+}
+
+.toggle-faculty-btn.active {
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+  color: var(--white);
+}
+
+.toggle-faculty-btn-column {
+  padding: 3px 7px; 
+  border: 1px solid var(--green);
+  border-radius: var(--radius);
+  min-width: 64px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, transform 0.2s;
+  background-color: transparent;
+  color: var(--green);
+}
+
+.toggle-faculty-btn-column.unassigned {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.toggle-faculty-btn-column:not(.unassigned) {
+  background-color: transparent;
+  color: var(--green);
+}
+
+.toggle-faculty-btn-column:not(.unassigned).active {
+  background-color: var(--green);
+  color: var(--white);
+  transform: translateY(-1px);
+  border-color: var(--green);
+}
+
+.toggle-faculty-btn-column.unassigned.active {
+  background-color: var(--red);
+  color: var(--white);
+  transform: translateY(-1px);
+  border-color: var(--red);
+}
+
+.right-panel {
+  width: 218px;
+  position: fixed;
+  top: 68px; 
+  right: 8px; 
+  bottom: 32px; 
+  z-index: 110;
+  overflow-y: auto;
+  scrollbar-width: thin; 
+  scrollbar-color: transparent transparent;
+}
+
+.right-panel:hover,
+.right-panel:focus,
+.right-panel:active {
+  scrollbar-color: var(--primary) transparent; 
+}
+
+.right-panel::-webkit-scrollbar {
+  width: 5px; 
+}
+
+.right-panel::-webkit-scrollbar-track {
+  background: transparent; 
+}
+
+.right-panel::-webkit-scrollbar-thumb {
+  background-color: transparent; 
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.right-panel:hover::-webkit-scrollbar-thumb,
+.right-panel:focus::-webkit-scrollbar-thumb,
+.right-panel:active::-webkit-scrollbar-thumb {
+  background-color: var(--primary); 
+}

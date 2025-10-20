@@ -1,3 +1,5 @@
+//scheduler without the merge function
+
 from ortools.sat.python import cp_model
 from collections import defaultdict
 from app.core.globals import schedule_dict, progress_state

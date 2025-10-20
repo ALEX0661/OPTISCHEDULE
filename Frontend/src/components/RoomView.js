@@ -171,15 +171,26 @@ const RoomView = ({ schedule, onScheduleUpdate, onClose }) => {
     }
 
     try {
-      // Extract just the time part (remove AM/PM for the API call)
-      const timeMatch = newStartTime.match(/(\d+):(\d+)/);
+      // Parse the time and convert to 24-hour format
+      const timeMatch = newStartTime.match(/(\d+):(\d+)\s*(AM|PM)/i);
       if (!timeMatch) {
         throw new Error('Invalid time format');
       }
       
+      let hour = parseInt(timeMatch[1]);
+      const minute = timeMatch[2];
+      const period = timeMatch[3].toUpperCase();
+      
+      // Convert to 24-hour format
+      if (period === 'PM' && hour !== 12) {
+        hour += 12;
+      } else if (period === 'AM' && hour === 12) {
+        hour = 0;
+      }
+      
       const overrideDetails = {
         schedule_id: draggedEvent.schedule_id,
-        new_start: `${timeMatch[1]}:${timeMatch[2]}`,
+        new_start: `${hour.toString().padStart(2, '0')}:${minute}`,
         new_room: newRoom,
         new_day: newDay
       };

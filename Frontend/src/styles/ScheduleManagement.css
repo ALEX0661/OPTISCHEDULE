@@ -15,8 +15,8 @@
   --red-dark: #b71c1c; /* Darkened from #d32f2f to #b71c1c for hover states */
   --blue: #2196f3;
   --yellow: #FFC107;
-  --radius: 10px; 
-  --card-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  --radius: 8px; 
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   --transition: all 0.3s ease;
 }
 
@@ -37,7 +37,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 14px; 
+  padding: 11px; 
   z-index: 2000;
 }
 
@@ -45,11 +45,11 @@
   background-color: var(--white);
   padding: 0;
   border-radius: var(--radius);
-  width: 80%;
-  max-width: 90vw;
-  max-height: 85vh;
+  width: 64%;
+  max-width: 72vw;
+  max-height: 68vh;
   overflow-y: auto;
-  box-shadow: 0 3px 16px rgba(0,0,0,0.2); 
+  box-shadow: 0 2px 13px rgba(0,0,0,0.16); 
   position: relative;
   scrollbar-width: thin; 
   scrollbar-color: transparent transparent; 
@@ -62,7 +62,7 @@
 }
 
 .faculty-modal::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 
 .faculty-modal::-webkit-scrollbar-track {
@@ -71,7 +71,7 @@
 
 .faculty-modal::-webkit-scrollbar-thumb {
   background-color: transparent; 
-  border-radius: 8px;
+  border-radius: 6px;
   transition: background-color 0.3s ease;
 }
 
@@ -84,63 +84,63 @@
 .faculty-modal-header {
   background-color: var(--primary);
   color: var(--white);
-  padding: 14px; 
+  padding: 11px; 
   text-align: center;
-  font-size: 1rem; 
+  font-size: 0.8rem; 
   font-weight: 600;
 }
 
 .faculty-modal-content {
-  padding: 23px;
+  padding: 18px;
 }
 
 .faculty-info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 14px; 
-  margin-bottom: 22px; 
+  grid-template-columns: repeat(auto-fit, minmax(176px, 1fr));
+  gap: 11px; 
+  margin-bottom: 18px; 
 }
 
 .faculty-info-grid .info-card {
   background: linear-gradient(145deg, var(--light-gray), var(--white));
   border: 1px solid var(--border-gray);
   border-radius: var(--radius);
-  padding: 12px; 
+  padding: 10px; 
   box-shadow: var(--card-shadow);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .faculty-info-grid .info-card:hover {
-  transform: translateY(-3px); 
-  box-shadow: 0 6px 13px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px); 
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
 }
 
 .faculty-info-grid .info-card h4 {
-  font-size: 0.72rem; 
+  font-size: 0.58rem; 
   font-weight: 600;
-  margin-bottom: 7px; 
+  margin-bottom: 6px; 
   color: var(--primary-dark);
   border-bottom: 1px solid var(--border-gray);
-  padding-bottom: 3px; 
+  padding-bottom: 2px; 
 }
 
 .faculty-info-grid .info-card p {
-  font-size: 0.68rem; 
+  font-size: 0.54rem; 
   margin: 0;
   color: var(--dark-gray);
-  line-height: 1.12;
+  line-height: 0.9;
 }
 
 .assigned-events-table {
   width: 100%;
   border-collapse: collapse;
-  margin: 9px 0; 
-  font-size: 0.49em; 
+  margin: 7px 0; 
+  font-size: 0.39em; 
 }
 
 .assigned-events-table th,
 .assigned-events-table td {
-  padding: 5px 6px; 
+  padding: 4px 5px; 
   border: 1px solid var(--border-gray);
   text-align: left;
 }
@@ -163,31 +163,31 @@
   background-color: var(--red);
   color: var(--white);
   border: none;
-  padding: 7px 11px; 
+  padding: 6px 9px; 
   border-radius: var(--radius);
   cursor: pointer;
-  font-size: 0.72em; 
+  font-size: 0.58em; 
   transition: background 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
 }
 
 .unassign-btn:hover {
   background-color: var(--red-dark);
   transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.12);
 }
 
 .close-btn {
   background-color: var(--green);
   color: var(--white);
   border: none;
-  padding: 7px 0; 
+  padding: 6px 0; 
   border-radius: var(--radius);
   cursor: pointer;
   transition: background 0.3s ease;
-  margin-top: 14px; 
+  margin-top: 11px; 
   width: 100%;
-  font-size: 0.68em; 
+  font-size: 0.54em; 
 }
 
 .close-btn:hover {
@@ -203,129 +203,19 @@
 .content {
   display: flex;
   flex-grow: 1;
-  gap: 18px; 
-  padding: 14px 22px; 
+  gap: 14px; 
+  padding: 11px 18px; 
   background-color: var(--light-gray);
-  margin-right: 230px; 
+  margin-right: 200px;
+
+
 }
 
 .left-panel {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  gap: 14px; 
-}
-
-.right-panel {
-  width: 248px;
-  position: fixed;
-  top: 77px; 
-  right: 9px; 
-  bottom: 36px; 
-  z-index: 110;
-  overflow-y: auto;
-  scrollbar-width: thin; 
-  scrollbar-color: transparent transparent;
-}
-
-.right-panel:hover,
-.right-panel:focus,
-.right-panel:active {
-  scrollbar-color: var(--primary) transparent; 
-}
-
-.right-panel::-webkit-scrollbar {
-  width: 6px; 
-}
-
-.right-panel::-webkit-scrollbar-track {
-  background: transparent; 
-}
-
-.right-panel::-webkit-scrollbar-thumb {
-  background-color: transparent; 
-  border-radius: 8px;
-  transition: background-color 0.3s ease;
-}
-
-.right-panel:hover::-webkit-scrollbar-thumb,
-.right-panel:focus::-webkit-scrollbar-thumb,
-.right-panel:active::-webkit-scrollbar-thumb {
-  background-color: var(--primary); 
-}
-
-.card {
-  background-color: var(--white);
-  border-radius: var(--radius);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  padding: 14px; 
-}
-
-.filters-card {
-  padding-bottom: 7px; 
-}
-
-.filters-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 14px;
-  color: #333;
-}
-
-.filters-icon {
-  color: var(--primary);
-  margin-right: 7px; 
-}
-
-.filters-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 11px; 
-  align-items: start;
-}
-
-.filter-group {
-  display: flex;
-  flex-direction: column;
-  gap: 4px; 
-}
-
-.filter-label {
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--dark-gray);
-  margin-bottom: 2px; 
-}
-
-.filter-select {
-  padding: 5px 7px; 
-  border: 1px solid var(--border-gray);
-  border-radius: 4px;
-  font-size: 11px;
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.filter-select:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.1);
-}
-
-.custom-checkbox {
-  display: inline-flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 90px; 
-  left: 14px;
-  top: 5px;
-  position: relative;
-}
-
-.custom-checkbox input[type="checkbox"] {
-  width: 16px; 
-  height: 16px; 
-  cursor: pointer;
-  accent-color: var(--primary);
 }
 
 .schedule-card {
@@ -337,26 +227,30 @@
 }
 
 .schedule-header {
-  padding: 14px; 
+  padding: 11px; 
   border-bottom: 1px solid var(--border-gray);
   font-weight: 600;
 }
 
 .schedule-table-container {
-  padding: 0 14px; 
+  padding: 0 11px; 
   flex-grow: 1;
+}
+
+.schedule-table td {
+    font-size: 0.7.5rem;
 }
 
 .schedule-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 5px; 
-  font-size: 0.72em; 
+  margin-top: 4px; 
+  font-size: 0.65em; 
 }
 
 .schedule-table th {
   background-color: var(--light-gray);
-  padding: 5px 9px; 
+  padding: 4px 7px; 
   text-align: left;
   font-weight: 600;
   border-bottom: 1px solid var(--border-gray);
@@ -365,7 +259,7 @@
 }
 
 .schedule-table td {
-  padding: 7px 9px; 
+  padding: 6px 7px; 
   border-bottom: 1px solid var(--border-gray);
 }
 
@@ -391,175 +285,17 @@
 }
 
 .course-code {
-  font-size: 9px; 
+  font-size: 10px; 
   color: var(--dark-gray);
   margin-top: 2px;
-}
-
-.faculty-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px; 
-}
-
-.faculty-title {
-  font-weight: 600;
-  color: #333;
-}
-
-.faculty-search {
-  padding: 5px 10px; 
-  border: 1px solid var(--border-gray);
-  border-radius: 3px;
-  font-size: 10px; 
-  width: 100%;
-  outline: none;
-  margin-bottom: 11px; 
-}
-
-.faculty-cards {
-  display: flex;
-  flex-direction: column;
-  gap: 8px; 
-  max-height: 400px; 
-  overflow-y: auto;
-}
-
-.faculty-card {
-  width: 100%;
-  padding: 12px 10px; 
-  min-height: 56px;
-  border: 1px solid var(--border-gray);
-  border-radius: var(--radius);
-  display: flex;
-  align-items: center;
-  gap: 10px; 
-  cursor: pointer;
-  transition: box-shadow 0.3s;
-  overflow: hidden;
-}
-
-.faculty-card:hover {
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.faculty-card.disabled {
-  opacity: 0.3;
-  transition: opacity 0.2s ease;
-}
-
-.faculty-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-left: 0px; 
-}
-
-.faculty-name-text {
-  font-weight: 530;
-  font-size: 10px; 
-  line-height: 1.0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.faculty-status {
-  font-size: 9px; 
-  color: var(--dark-gray);
-  margin-top: 3px; 
-  display: flex;
-  align-items: center;
-}
-
-.status-indicator {
-  width: 10px; 
-  height: 10px; 
-  border-radius: 50%;
-  margin-left: 3px; 
-}
-
-.status-green {
-  background-color: var(--green);
-}
-
-.status-yellow {
-  background-color: var(--yellow);
-}
-
-.status-red {
-  background-color: var(--red);
-}
-
-.unassigned-indicator {
-  font-style: italic;
-  color: var(--dark-gray);
-}
-
-.toggle-faculty-btn {
-  background-color: transparent;
-  color: var(--green);
-  border: 1px solid var(--green);
-  padding: 4px 7px; 
-  border-radius: var(--radius);
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s, transform 0.2s;
-}
-
-.toggle-faculty-btn:hover {
-  color: var(--white);
-  transform: translateY(-1px);
-}
-
-.toggle-faculty-btn.active {
-  background-color: var(--primary-dark);
-  border-color: var(--primary-dark);
-  color: var(--white);
-}
-
-.toggle-faculty-btn-column {
-  padding: 4px 7px; 
-  border: 1px solid var(--green);
-  border-radius: var(--radius);
-  min-width: 72px;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s, transform 0.2s;
-  background-color: transparent;
-  color: var(--green);
-}
-
-.toggle-faculty-btn-column.unassigned {
-  border-color: var(--red);
-  color: var(--red);
-}
-
-.toggle-faculty-btn-column:not(.unassigned) {
-  background-color: transparent;
-  color: var(--green);
-}
-
-.toggle-faculty-btn-column:not(.unassigned).active {
-  background-color: var(--green);
-  color: var(--white);
-  transform: translateY(-1px);
-  border-color: var(--green);
-}
-
-.toggle-faculty-btn-column.unassigned.active {
-  background-color: var(--red);
-  color: var(--white);
-  transform: translateY(-1px);
-  border-color: var(--red);
 }
 
 .override-btn {
   background-color: var(--green); /*from blue nung una to green */
   color: var(--white);
   border: none;
-  padding: 5px 9px; 
-  font-size: 12px;
+  padding: 4px 7px; 
+  font-size: 10px;
   border-radius: var(--radius);
   cursor: pointer;
   transition: transform 0.2s ease, background-color 0.3s ease;
@@ -572,13 +308,13 @@
 
 .override-modal {
   background-color: var(--white);
-  padding: 14px; 
+  padding: 11px; 
   border-radius: var(--radius);
   width: 100%;
-  max-width: 288px; 
-  max-height: 80vh;
+  max-width: 230px; 
+  max-height: 64vh;
   overflow-y: auto;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.24);
   scrollbar-width: thin; 
   scrollbar-color: transparent transparent;
 }
@@ -591,43 +327,43 @@
 
 .override-header {
   text-align: center;
-  margin-bottom: 11px; 
+  margin-bottom: 9px; 
 }
 
 .override-modal h3 {
-  margin-bottom: 11px; 
+  margin-bottom: 9px; 
   color: #2E7D32;
-  font-size: 1.1em; 
+  font-size: 0.88em; 
   text-align: center;
 }
 
 .override-content {
   display: flex;
   flex-direction: column;
-  gap: 9px; 
-  margin-bottom: 11px; 
+  gap: 7px; 
+  margin-bottom: 9px; 
 }
 
 .override-field label {
-  margin-bottom: 3px; 
+  margin-bottom: 2px; 
   font-weight: bold;
-  font-size: 0.68em; 
+  font-size: 0.54em; 
   color: #333;
 }
 
 .override-field input[type="time"],
 .override-field select {
-  padding: 6px; 
+  padding: 5px; 
   border: 1px solid #ccc;
   border-radius: var(--radius);
-  font-size: 0.8em; 
+  font-size: 0.64em; 
 }
 
 #override-room-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px; 
-  padding: 5px; 
+  gap: 4px; 
+  padding: 4px; 
   border: 1px solid #ccc;
   border-radius: var(--radius);
   background-color: #f9f9f9;
@@ -635,7 +371,7 @@
 
 #override-room-container .room-label {
   background-color: #eaeaea;
-  padding: 3px 6px; 
+  padding: 2px 5px; 
   border-radius: var(--radius);
   cursor: pointer;
 }
@@ -647,14 +383,14 @@
 .override-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 7px; 
+  gap: 6px; 
 }
 
 .override-actions button {
   background-color: #2E7D32;
   color: #fff;
   border: none;
-  padding: 5px 12px; 
+  padding: 4px 10px; 
   border-radius: var(--radius);
   cursor: pointer;
 }
@@ -678,8 +414,8 @@
   background-color: var(--primary);
   color: var(--white);
   border: none;
-  padding: 7px 14px; 
-  font-size: 0.72em; 
+  padding: 6px 11px; 
+  font-size: 0.58em; 
   border-radius: var(--radius);
   cursor: pointer;
   transition: background 0.3s ease;
@@ -689,23 +425,23 @@
 .existing-schedules-dropdown {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .existing-schedules-dropdown label {
-  font-size: 10px; 
+  font-size: 8px; 
   font-weight: 500;
   color: var(--dark-gray);
 }
 
 .existing-schedules-dropdown select {
-  padding: 5px 7px; 
+  padding: 4px 6px; 
   border: 1px solid var(--border-gray);
-  border-radius: 4px;
-  font-size: 10px; 
+  border-radius: 3px;
+  font-size: 8px; 
   outline: none;
   transition: border-color 0.2s ease;
-  min-width: 150px;
+  min-width: 120px;
 }
 
 .existing-schedules-dropdown select:focus {
@@ -722,11 +458,11 @@
 }
 
 .schedule-name-display {
-  padding: 15px 18px;
+  padding: 12px 14px;
 }
 
 .schedule-name-display h2 {
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--primary-dark);
   margin: 0;
@@ -734,9 +470,9 @@
 
 h2 {
   display: block;
-  font-size: 1.125em; 
-  margin-block-start: 0.83em;
-  margin-block-end: 0.83em;
+  font-size: 0.9em; 
+  margin-block-start: 0.66em;
+  margin-block-end: 0.66em;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
   font-weight: bold;
@@ -745,14 +481,14 @@ h2 {
 
 .faculty-modal {
   width: 100%;
-  max-width: 810px; 
+  max-width: 648px; 
 }
 
 .faculty-modal {
   background-color: var(--white);
   padding: 0px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
   position: relative;
 }
 
@@ -771,13 +507,13 @@ h2 {
 }
 
 .spinner {
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  width: 36px; 
-  height: 36px; 
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  width: 29px; 
+  height: 29px; 
   border-radius: 50%;
   border-left-color: var(--primary);
   animation: spin 1s linear infinite;
-  margin-bottom: 14px;
+  margin-bottom: 11px;
 }
 
 @keyframes spin {
@@ -786,19 +522,19 @@ h2 {
 }
 
 .loading-overlay p {
-  font-size: 13px; 
+  font-size: 10px; 
   color: var(--dark-gray);
   font-weight: 500;
   text-align: center;
-  max-width: 80%;
+  max-width: 64%;
 }
 
 .cards {
   width: 100%;
   background-color: var(--white);
-  border-radius: 12px; 
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
-  padding: 22px 25px;
+  border-radius: 10px; 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 18px 20px;
   margin-bottom: 0px;
   transition: transform var(--transition), box-shadow var(--transition);
   animation: slideUp 0.4s forwards;
@@ -809,19 +545,19 @@ h2 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  margin-top: 20px;
+  padding: 16px;
+  margin-top: 16px;
 }
 
 .no-faculty-logo {
-  max-width: 150px;
+  max-width: 120px;
   width: 100%;
   height: auto;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .no-faculty-container p {
-  font-size: 1.1em;
+  font-size: 0.88em;
   color: #555;
   margin: 0;
   text-align: center;
@@ -832,37 +568,34 @@ h2 {
 .view-toggle-container {
   display: flex;
   justify-content: flex-end;
-  padding: 15px 20px;
+  padding: 12px 16px;
   background: #f8f9fa;
-  border-radius: 8px 8px 0 0;
+  border-radius: 6px 6px 0 0;
   border-bottom: 2px solid #dee2e6;
 }
 
 .view-toggle-btn {
-  padding: 12px 24px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  padding: 6px 11px;
+  background-color: var(--primary);
+  color: var(--white);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius);
+  font-size: 0.44em;
+  font-weight: 400;
   cursor: pointer;
-  font-size: 1em;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  transition: var(--transition);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
 }
 
 .view-toggle-btn:hover {
+  background-color: var(--primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.4);
-  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+  box-shadow: 0 3px 6px rgba(46, 125, 50, 0.24);
 }
 
 .view-toggle-btn:active {
   transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* Ensure the schedule management container accommodates the new button */
@@ -876,13 +609,70 @@ h2 {
 @media (max-width: 768px) {
   .view-toggle-container {
     justify-content: center;
-    padding: 10px;
+    padding: 8px;
   }
 
   .view-toggle-btn {
     width: 100%;
     justify-content: center;
-    font-size: 0.95em;
-    padding: 10px 20px;
+    font-size: 0.76em;
+    padding: 8px 16px;
+  }
+}
+
+.left-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .left-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+  
+  .left-controls .save-schedule-btn,
+  .left-controls .existing-schedules-dropdown {
+    width: 100%;
+  }
+  
+  .existing-schedules-dropdown {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .existing-schedules-dropdown label {
+    text-align: left;
+  }
+}
+
+.schedule-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+}
+
+.schedule-header-row .schedule-name-display h2 {
+  margin: 0;
+  flex: 1;
+  font-size: 8px;
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+@media (max-width: 768px) {
+  .schedule-header-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    text-align: center;
+  }
+  
+  .schedule-header-row .view-toggle-btn {
+    width: 100%;
+    justify-content: center;
   }
 }
